@@ -5075,6 +5075,23 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 //     el: '#app',
 // });
 
+__webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+var eleOverlay = document.querySelector('.overlay');
+console.log(eleOverlay);
+if (eleOverlay) {
+  var btnsDelete = document.querySelectorAll('.btn-delete-me');
+  btnsDelete.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      eleOverlay.classList.remove('d-none');
+      eleOverlay.querySelector('form').setAttribute('action', 'http://localhost:8000/posts/' + this.dataset.id);
+    });
+  });
+  var eleBtnClose = eleOverlay.querySelector('.btn-close-me');
+  eleBtnClose.addEventListener('click', function () {
+    eleOverlay.classList.add('d-none');
+  });
+}
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

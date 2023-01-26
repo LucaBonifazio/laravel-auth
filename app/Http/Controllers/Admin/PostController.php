@@ -5,9 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 class PostController extends Controller
 {
+    private $validationChecks = [
+        'slug'      => 'string|required|max:100',
+        'title'     => 'string|required|max:100',
+        'image'    => 'https://picsum.photos/id/'. 'rand(0, 1000)' .'500/400',
+        'content'   => 'nullable|boolean',
+        'excerpt' => 'nullable|date',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::paginate(5);
+        return view('admin.posts.index', [
+            'posts' => $posts,
+        ]);
     }
 
     /**
@@ -25,7 +37,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -36,7 +48,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate($this->validationChecks);
+
+        $data = $request->all();
+
+        $post = Post::create($data);
+
+        return redirect()->route('admin.posts.show', ['post' => $post])->with('success_create', true);
     }
 
     /**
@@ -47,7 +65,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -58,7 +76,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -70,7 +88,18 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate($this->validationChecks);
+
+        $data = $request->all();
+
+        $post->slug        = $data['slug'];
+        $post->title       = $data['title'];
+        $post->image      = $data['image'];
+        $post->content     = $data['content'];
+        $post->excerpt   = $data['excerpt'];
+        $post->update();
+
+        return redirect()->route('admin.posts.show', ['post' => $post]);
     }
 
     /**
@@ -81,6 +110,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('admin.posts.index')->with('success_delete', $post->id);
     }
 }
