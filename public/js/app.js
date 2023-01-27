@@ -5076,17 +5076,18 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 // });
 
 __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+
+//btn for delete
 var eleOverlay = document.querySelector('.overlay');
-console.log(eleOverlay);
 if (eleOverlay) {
-  var btnsDelete = document.querySelectorAll('.btn-delete-me');
+  var btnsDelete = document.querySelectorAll('.btn_delete');
   btnsDelete.forEach(function (btn) {
     btn.addEventListener('click', function () {
       eleOverlay.classList.remove('d-none');
-      eleOverlay.querySelector('form').setAttribute('action', 'http://localhost:8000/posts/' + this.dataset.id);
+      eleOverlay.querySelector('form').setAttribute('action', 'http://localhost:8000/admin/posts/' + this.dataset.id);
     });
   });
-  var eleBtnClose = eleOverlay.querySelector('.btn-close-me');
+  var eleBtnClose = eleOverlay.querySelector('.btn_close');
   eleBtnClose.addEventListener('click', function () {
     eleOverlay.classList.add('d-none');
   });

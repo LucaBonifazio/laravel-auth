@@ -33,18 +33,20 @@ require('./bootstrap');
 
 require('bootstrap');
 
+
+//btn for delete
 const eleOverlay = document.querySelector('.overlay');
-console.log(eleOverlay)
+
 if (eleOverlay) {
-    const btnsDelete = document.querySelectorAll('.btn-delete-me');
+    const btnsDelete = document.querySelectorAll('.btn_delete');
     btnsDelete.forEach(btn => {
         btn.addEventListener('click', function () {
             eleOverlay.classList.remove('d-none');
-            eleOverlay.querySelector('form').setAttribute('action', 'http://localhost:8000/posts/' + this.dataset.id)
+            eleOverlay.querySelector('form').setAttribute('action', 'http://localhost:8000/admin/posts/' + this.dataset.id)
         })
     })
 
-    const eleBtnClose = eleOverlay.querySelector('.btn-close-me');
+    const eleBtnClose = eleOverlay.querySelector('.btn_close');
 
     eleBtnClose.addEventListener('click', function() {
         eleOverlay.classList.add('d-none');

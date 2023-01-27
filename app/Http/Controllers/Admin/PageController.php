@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,11 @@ class PageController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
+        $post = Post::paginate(5);
 
-        return view('admin.home', compact('user'));
+        return view('admin.home', [
+            'user' => $user,
+            'post' => $post,
+        ]);
     }
 }

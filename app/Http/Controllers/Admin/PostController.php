@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 class PostController extends Controller
 {
-    private $validationChecks = [
-        'slug'      => 'string|required|max:100',
-        'title'     => 'string|required|max:100',
-        'image'    => 'https://picsum.photos/id/'. 'rand(0, 1000)' .'500/400',
-        'content'   => 'nullable|boolean',
-        'excerpt' => 'nullable|date',
+    private $validation = [
+        'slug'      => [
+            'string',
+            'required',
+            'max:100',
+        ],
+        'title'        => 'string|required|max:100',
+        'image'        => 'url|max:100',
+        'upload_image' => 'image|max:1024',
+        'content'      => 'string',
+        'excerpt'      => 'string',
     ];
 
     /**
@@ -25,6 +32,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::paginate(5);
+
         return view('admin.posts.index', [
             'posts' => $posts,
         ]);
@@ -48,13 +56,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->validationChecks);
+        $this->validation['slug'][] = 'unique:posts';
+        $request->validate($this->validation);
 
         $data = $request->all();
 
-        $post = Post::create($data);
+        $img_path = Storage::put('uploads', $data['uploaded_img']);
 
-        return redirect()->route('admin.posts.show', ['post' => $post])->with('success_create', true);
+        $post = new Post;
+        $post->slug        = $data['slug'];
+        $post->title       = $data['title'];
+        $post->image       = $data['image'];
+        $post->uploaded_img  = $img_path;
+        $post->content     = $data['content'];
+        $post->excerpt     = $data['excerpt'];
+        $post->save();
+
+        return redirect()->route('admin.posts.show', ['post' => $post]);
     }
 
     /**
@@ -88,15 +106,21 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $request->validate($this->validationChecks);
+        $this->validation['slug'][] = Rule::unique('posts')->ignore($post);
+        $request->validate($this->validation);
 
         $data = $request->all();
 
+        $img_path = Storage::put('uploads', $data['uploaded_img']);
+        Storage::delete($post->uploaded_img);
+
+
         $post->slug        = $data['slug'];
         $post->title       = $data['title'];
-        $post->image      = $data['image'];
+        $post->image       = $data['image'];
+        $post->uploaded_img  = $img_path;
         $post->content     = $data['content'];
-        $post->excerpt   = $data['excerpt'];
+        $post->excerpt     = $data['excerpt'];
         $post->update();
 
         return redirect()->route('admin.posts.show', ['post' => $post]);
@@ -112,6 +136,6 @@ class PostController extends Controller
     {
         $post->delete();
 
-        return redirect()->route('admin.posts.index')->with('success_delete', $post->id);
+        return redirect()->route('admin.posts.index')->with('success_delete', $post);
     }
 }

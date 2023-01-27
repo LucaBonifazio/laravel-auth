@@ -2,8 +2,8 @@
 
 @section('content')
     @if (session('success_delete'))
-        <div class="alert alert-success">
-            Il post con id {{ session('success_delete') }} e' stato eliminato correttamente
+        <div class="alert alert-warning">
+            ID post {{ session('success_delete')->id }} successfully deleted!
         </div>
     @endif
     <table class="table table-striped">
@@ -28,7 +28,7 @@
                         <a href="{{ route('admin.posts.edit', ['post' => $post]) }}" class="btn btn-warning">Edit</a>
                     </td>
                     <td>
-                        <button class="btn btn-danger btn-delete-me" data-id="{{ $post->id }}">Delete</button>
+                        <button class="btn btn-danger btn_delete" data-id="{{ $post->id }}">Delete</button>
                     </td>
                 </tr>
             @endforeach
@@ -37,5 +37,5 @@
 
     {{ $posts->links() }}
 
-    {{-- @include('partials.delete_confirmation') --}}
+    @include('admin.partials.delete_confirmation')
 @endsection
