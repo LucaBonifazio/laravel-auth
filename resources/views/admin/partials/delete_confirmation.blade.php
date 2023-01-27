@@ -1,5 +1,5 @@
 <div class="overlay d-none">
-    <form class="delete_confirmation" action="{{ route('admin.posts.destroy', ['post' => $post])}}" method="POST">
+    <form class="delete_confirmation" action="{{ route('admin.posts.destroy', ['post' => $post]) }}" method="POST">
         @method('DELETE')
         @csrf
         <h2>Are you sure?</h2>

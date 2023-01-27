@@ -56,7 +56,7 @@
             @enderror
         </div>
 
-            {{-- <div class="mb-3">
+            <div class="mb-3">
             <label for="uploaded_img" class="form-label">Immagine</label>
             <input class="form-control @error('uploaded_img') is-invalid @enderror" type="file" id="uploaded_img" name="uploaded_img">
             <div class="invalid-feedback">
@@ -67,7 +67,7 @@
                         @endforeach
                     </ul>
                 @enderror
-            </div> --}}
+            </div>
 
             <div class="mb-3">
             <label for="content" class="form-label">Content</label>

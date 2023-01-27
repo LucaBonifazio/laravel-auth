@@ -2,8 +2,8 @@
 
 @section('content')
     @if (session('success_delete'))
-        <div class="alert alert-warning">
-            ID post {{ session('success_delete')->id }} successfully deleted!
+        <div class="alert alert-warning" role="alert">
+            Post ID: {{ session('success_delete')->id }} successfully deleted!
         </div>
     @endif
     <table class="table table-striped">
