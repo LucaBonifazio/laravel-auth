@@ -42,6 +42,7 @@ if (eleOverlay) {
     btnsDelete.forEach(btn => {
         btn.addEventListener('click', function () {
             eleOverlay.classList.remove('d-none');
+            eleOverlay.querySelector('form').setAttribute('action', 'http://localhost:8000/admin/posts/' + this.dataset.id);
         })
     })
 

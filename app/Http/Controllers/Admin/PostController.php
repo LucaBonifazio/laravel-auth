@@ -61,6 +61,7 @@ class PostController extends Controller
 
         $data = $request->all();
 
+        $data['uploaded_img'] = $data['uploaded_img'] ?? '';
         $img_path = Storage::put('uploads', $data['uploaded_img']);
 
         $post = new Post;

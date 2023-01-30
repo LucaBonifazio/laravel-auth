@@ -23,11 +23,7 @@
                     <td>{{ $post->title }}</td>
                     <td>
                         <a href="{{ route('admin.posts.show', ['post' => $post]) }}" class="btn btn-primary">Show</a>
-                    </td>
-                    <td>
                         <a href="{{ route('admin.posts.edit', ['post' => $post]) }}" class="btn btn-warning">Edit</a>
-                    </td>
-                    <td>
                         <button class="btn btn-danger btn_delete" data-id="{{ $post->id }}">Delete</button>
                     </td>
                 </tr>
